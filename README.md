@@ -40,16 +40,26 @@ tiene como objetivo realizar una filogenia preliminar del género en base a un m
 
 ---
 
-**MUSCLE v5** (Edgar 2021) : Para el alineamiento de las secuencias
+**MUSCLE v5** (Edgar 2021) : Para el alineamiento de las secuencias.
 
-**IQTREE v1.2.2** (Wong 2025) : Para la construcción del árbol filogenético
+**IQTREE v1.2.2** (Wong 2025) : Para la construcción del árbol filogenético.
 
-**FigTree v** () : Para la visualización del árbol
+**FigTree v1.4.4** () : Para la visualización del árbol.
+
+**NANO** : Editor de texto sencillo de usar para, con _Regular expressions_, cambiar el nombre científico y evitar problemas en los análisis.
 
 Este proyecto se realizará dentro de una supercomputadora ubicada en UCLA. Las credenciales y claves son 
 secretas, por lo que no se especificarán en este Markdown.
 
+Pasos adicionales:
+
 * Crear un directorio llamado "VirolaPhylogenetics", donde se depositarán los análisis.
+
+* Para mantener el orden, crear dentro tres directorios más:
+
+1. IQTREE : Donde se depositarán las filogenias.
+2. MUSCLE : Donde se depositarán los alineamientos.
+3. RAWDATA : Donde estarán las secuencias crudas.
 
 ---
 
@@ -59,25 +69,40 @@ secretas, por lo que no se especificarán en este Markdown.
 
 *Dentro de Hoffmann* ->
 
+**Pedir un nodo computacional y memoria:** qrsh h_data=30G;h_vmem=30G
+
 Para cargar los programas:
 
 MUSCLE : module load 
 
 IQTree : module load
 
-#### **Scripts utilizados**
+#### **Comandos utilizados**
 
 ---
 
 **Obtener las secuencias del NCBI**
 
+**¡Paréntesis!** -> En este paso utilizar NANO para reducir el nombre a algo más sencillo con _regular expressions_
+
+Utilizar: 
+
 **Alinear las secuencias con MUSCLE**
 
 **Realizar una filogenia con IQTree**
 
+Los resultados obtenidos de estos comandos hay que guardarlos en las carpetas correspondientes (automatizado en el script the Bash que se encuentra
+más abajo.
+
+---
+
+### **Script .sh**
+
 **Script consenso (para ejecutar una sola vez)**
 
 ---
+
+### **Visualización en IQTree**
 
 #### **Referencias**
 
