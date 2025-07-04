@@ -83,6 +83,7 @@ IQTree : module load
 
 **Obtener las secuencias del NCBI**
 
+
 **¡Paréntesis!** -> En este paso utilizar NANO para reducir el nombre a algo más sencillo con _regular expressions_
 
 Utilizar: 
@@ -99,6 +100,36 @@ más abajo.
 ### **Script .sh**
 
 **Script consenso (para ejecutar una sola vez)**
+**ES UN SCRIPT PRELIMINAR** Falta: Establecer outgroups, modificar con ATOM, visualizar y discutir
+
+##Bajar secuencias
+
+/u/scratch/d/dechavez/Bioinformatica-PUCE/MastBio/edirect/esearch -db nuccore -query "rbcl [GENE] AND Virola[ORGN]" | efetch -format fasta > VirolSeq.fasta
+
+./muscle3.8.31_i86linux64 -in VirolSeq.fasta -out Muscle.Virola.fasta
+
+iqtree -s Muscle.Virola.fasta -m GTR+I+G -bb 1000 -minsup 0.5
+
+##Crear respectivas carpetas
+
+mkdir MUSCLE
+mkdir IQTREE
+mkdir PHYLOGENY
+
+##Paso intermedio = modificación con ATOM (mirar arriba)
+
+scp scp dechavez@hoffman2.idre.ucla.edu:/u/scratch/d/dechavez/Bioinformatica-PUCE/RediseBio/directoriodeseado ./
+
+##clave: **confidencial**
+
+##Alinear secuencias
+./muscle3.8.31_i86linux64 -in VirolSeq.fasta -out Muscle.Virola.fasta
+
+##Generar Filogenias
+
+iqtree -s Muscle.Virola.fasta -m GTR+I+G -bb 1000 -minsup 0.5
+
+
 
 ---
 
