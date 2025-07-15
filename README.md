@@ -46,100 +46,97 @@ tiene como objetivo realizar una filogenia preliminar del género en base a un m
 
 **FigTree v1.4.4** () : Para la visualización del árbol.
 
-**NANO** : Editor de texto sencillo de usar para, con _Regular expressions_, cambiar el nombre científico y evitar problemas en los análisis.
+**ATOM**: Editor de texto sencillo de usar para, con _Regular expressions_, cambiar el nombre científico y evitar problemas en los análisis.
 
 Este proyecto se realizará dentro de una supercomputadora ubicada en UCLA. Las credenciales y claves son 
 secretas, por lo que no se especificarán en este Markdown.
 
-Pasos adicionales:
+---
 
-* Crear un directorio llamado "VirolaPhylogenetics", donde se depositarán los análisis.
+#### **Script explicado comando por comando:**
 
-* Para mantener el orden, crear dentro tres directorios más:
+<span style="color:green">**Texto verde se refiere a comandos**
 
-1. IQTREE : Donde se depositarán las filogenias.
-2. MUSCLE : Donde se depositarán los alineamientos.
-3. RAWDATA : Donde estarán las secuencias crudas.
+**Texto negro es la explicación**
 
 ---
 
-#### **Instalación**
+
+#### **Parte I:** descarga de los datos
+
+
+<span style="color:green">**/u/scratch/d/dechavez/Bioinformatica-PUCE/MastBio/edirect/esearch -db nuccore -query "rbcl [GENE] AND Virola[ORGN]" | efetch -format fasta > rbcl-Virola.fasta**
+
+<span style="color:green">**/u/scratch/d/dechavez/Bioinformatica-PUCE/MastBio/edirect/esearch -db nuccore -query "rbcl [GENE] AND Osteophloeum[ORGN]" | efetch -format fasta > rbcl-Osteophloeum.fasta**
+
+<span style="color:green">**/u/scratch/d/dechavez/Bioinformatica-PUCE/MastBio/edirect/esearch -db nuccore -query "rbcl [GENE] AND Compsoneura[ORGN]" | efetch -format fasta > rbcl-Compsoneura.fasta**
+
+<span style="color:green">**/u/scratch/d/dechavez/Bioinformatica-PUCE/MastBio/edirect/esearch -db nuccore -query "rbcl [GENE] AND Duguetia[ORGN]" | efetch -format fasta > rbcl-Duguetia.fasta**
+
+Estas líneas funcionan para descargar todas las secuencias existentes de gen (rbcl) para un un género (en este caso *Virola*, *Compsoneura*, *Osteophloeum* y *Duguetia*). Todas las
+secuencias son en formato FASTA y están en archivos separados, los cuales posteriormente tendremos que unir para analizarlos.
+
+Como queremos ver la posición filogenética de *Virola*, descargamos los otros dos grupos hermanos *Osteophloeum* y *Compsoneura* que pertenecen a 
+la misma familia Myristicaceae. Asimismo, descargamos las secuencias del grupo externo, en este caso una Annonaceae del género *Duguetia*, que pertenece
+al mismo orden, pero no a la misma familia.
 
 ---
 
-*Dentro de Hoffmann* ->
+#### **Parte II**: alineamiento de los datos y árboles filogenéticos
 
-**Pedir un nodo computacional y memoria:** qrsh h_data=30G;h_vmem=30G
+<span style="color:green">**cat rbcl-Compsoneura.fasta rbcl-Duguetia.fasta rbcl-Osteophloeum.fasta rbcl-Virola.fasta > MatrizMagnoliales.fasta**
 
-Para cargar los programas:
-
-MUSCLE : module load 
-
-IQTree : module load
-
-#### **Comandos utilizados**
+<span style="color:green">**./muscle3.8.31_i86linux64 -in MatrizMagnoliales.fasta -out MatrizMagnolialesALN.fasta**
 
 ---
 
-**Obtener las secuencias del NCBI**
+**Parte III**: edición de los nombres en ATOM (descarga de datos y subida de datos)
 
+<span style="color:green">**scp **direccióncorreo**:/u/scratch/d/dechavez/Bioinformatica-PUCE/RediseBio/EmilioTR/ProyectoFinal/MatrizMagnolialesALN.fasta ./**
 
-**¡Paréntesis!** -> En este paso utilizar NANO para reducir el nombre a algo más sencillo con _regular expressions_
+Luego de abrir en el editor de texto ATOM, vamos a FIND en la barra de herramientas, seleccionamos REPLACE IN BUFFER y allí dentro
+presionamos el botón de REGULAR EXPRESSIONS (.*), posteriormente en la barra inferior colocamos en FIND las siguientes expresiones:
 
-Utilizar: 
+^>?(\w+\.\d+)\s+([A-Z][a-z]+)\s+([a-z]+).*
 
-**Alinear las secuencias con MUSCLE**
+y en REPLACE colocamos:
 
-**Realizar una filogenia con IQTree**
+>$1_$2_$3
 
-Los resultados obtenidos de estos comandos hay que guardarlos en las carpetas correspondientes (automatizado en el script the Bash que se encuentra
-más abajo.
+Así, obtenemos el nombre de cada taxón más simplificado para que los análisis filogenéticos no se tropiecen. El resultado sería, por ejemplo:
 
----
-
-### **Script .sh**
-
-**Script consenso (para ejecutar una sola vez)**
-**ES UN SCRIPT PRELIMINAR** Falta: Establecer outgroups, modificar con ATOM, visualizar y discutir
-
-##Bajar secuencias
-
-/u/scratch/d/dechavez/Bioinformatica-PUCE/MastBio/edirect/esearch -db nuccore -query "rbcl [GENE] AND Virola[ORGN]" | efetch -format fasta > VirolSeq.fasta
-
-./muscle3.8.31_i86linux64 -in VirolSeq.fasta -out Muscle.Virola.fasta
-
-iqtree -s Muscle.Virola.fasta -m GTR+I+G -bb 1000 -minsup 0.5
-
-##Crear respectivas carpetas
-
-mkdir MUSCLE
-mkdir IQTREE
-mkdir PHYLOGENY
-
-##Paso intermedio = modificación con ATOM (mirar arriba)
-
-scp scp dechavez@hoffman2.idre.ucla.edu:/u/scratch/d/dechavez/Bioinformatica-PUCE/RediseBio/directoriodeseado ./
-
-##clave: **confidencial**
-
-##Alinear secuencias
-./muscle3.8.31_i86linux64 -in VirolSeq.fasta -out Muscle.Virola.fasta
-
-##Generar Filogenias
-
-iqtree -s Muscle.Virola.fasta -m GTR+I+G -bb 1000 -minsup 0.5
-
-
+>AY738160.1_Duguetia_guianensis
 
 ---
 
-### **Visualización en IQTree**
+#### **Parte IV**: construcción del árbol filogenético
+
+<span style="color:green">iqtree -s MatrizMagnolialesALN.fasta -o AY738160.1_Duguetia_guianensis -m HKY+I+G4 -bb 1000 -minsup 0.5
+
+Aquí ejecutamos el programa IQTREE, específicando con la función *-s* nuestro archivo, con *-o* nuestro grupo externo, con *-m* nuestro
+modelo evolutivo, con *-bb* el número de bootstraps que estamos estableciendo y con *-minsup* que todo valor de soporte menor al 50% sea
+arrojado como una politomía.
+
+Luego de obtener varios archivos .tree, descargaremos el que termina en .treefile dentro de nuestro escritorio con los comandos utilizados en la
+parte III. Esto lo visualizaremos en Figtree dentro de nuestro computadores.
+
+---
+
+#### **Restulados de la filogenia**
+
+
+![Filogenia de *Virola* en relación con sus grupos hermanos](https://github.com/EmilioTrujillo03/ProyectoFinalBioInf/blob/main/VirolaFilogenia.jpg?raw=true)
+
+DISCUTIIIIRRRRRR
+
+
+---
 
 #### **Referencias**
 
 ---
 
-
+AGREGAAARRRRRR
 
 
 
