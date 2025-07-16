@@ -10,4 +10,6 @@ cat rbcl-Compsoneura.fasta rbcl-Duguetia.fasta rbcl-Osteophloeum.fasta rbcl-Viro
 
 ./muscle3.8.31_i86linux64 -in MatrizMagnoliales.fasta -out MatrizMagnolialesALN.fasta
 
+module load iqtree/2.2.2.6
+
 iqtree -s MatrizMagnolialesALN.fasta -o AY738160.1_Duguetia_guianensis -m HKY+I+G4 -bb 1000 -minsup 0.5
