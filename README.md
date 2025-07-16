@@ -61,7 +61,11 @@ confidenciales, por lo que no se especificarán en este Markdown.
 #### **Parte I:** *descarga de los datos*
 
 
+<<<<<<< HEAD
 **/u/scratch/d/dechavez/Bioinformatica-PUCE/MastBio/edirect/esearch -db nuccore -query "rbcl [GENE] AND Virola[ORGN]" | efetch -format fasta > rbcl-Virola.fasta**
+=======
+<span style="color:red">**/u/scratch/d/dechavez/Bioinformatica-PUCE/MastBio/edirect/esearch -db nuccore -query "rbcl [GENE] AND Virola[ORGN]" | efetch -format fasta > rbcl-Virola.fasta**
+>>>>>>> 24c0c9d2710ef3fb8fe0aa72f961326fbd38f39e
 
 **/u/scratch/d/dechavez/Bioinformatica-PUCE/MastBio/edirect/esearch -db nuccore -query "rbcl [GENE] AND Osteophloeum[ORGN]" | efetch -format fasta > rbcl-Osteophloeum.fasta**
 
